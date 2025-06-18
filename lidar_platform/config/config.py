@@ -14,8 +14,8 @@ import numpy as np
 bin_las = 'C:\\opt\\LAStools\\bin'
 
 # CloudCompare paths
-cc_std = '"/usr/local/bin/cc.sh"' # standard CloudCompare for old scripts (Baptiste Feldman)
-cc_exe = '/usr/local/bin/cc.sh' # default exe for CloudCompare
+cc_std = '"./cc.sh"' # standard CloudCompare for old scripts (Baptiste Feldman)
+cc_exe = './cc.sh' # default exe for CloudCompare
 # other CloudCompare versions on lidar-server
 cc_2022_07_05 = r'G:\RENNES1\PaulLeroy\CloudCompare_2022_07_05\CloudCompare.exe'
 
