@@ -905,6 +905,57 @@ def icp(compared, reference,
     return out
 
 
+def icp_bis(compared, reference, overlap=None, random_sampling_limit=None, farthest_removal=False, iter_=None, silent=True, debug=False, rot=None, skip_tx=False, skip_ty=False, skip_tz=False):
+    # Create the command object
+    cmd = CCCommand(cc_exe, silent=silent, fmt='LAS', auto_save='ON')
+
+    # Open the files
+    if os.path.splitext(compared)[1] == '.sbf':
+        cmd.open_file(compared, global_shift='FIRST')
+    else:
+        cmd.open_file(compared)
+
+    if os.path.splitext(reference)[1] == '.sbf':
+        cmd.open_file(reference, global_shift='FIRST')
+    else:
+        cmd.open_file(reference)
+
+    # Add the ICP command
+    cmd.append('-ICP')
+    if skip_tx:
+        cmd.append('-SKIP_TX')
+    if skip_ty:
+        cmd.append('-SKIP_TY')
+    if skip_tz:
+        cmd.append('-SKIP_TZ')
+    if rot :
+        cmd.append('-ROT')
+        cmd.append(rot)
+
+
+    # Add optional parameters
+    if overlap is not None:
+        cmd.append(f'-OVERLAP')
+        cmd.append(f'{overlap}')
+    if random_sampling_limit is not None:
+        cmd.append(f'-RANDOM_SAMPLING_LIMIT')
+        cmd.append(f'{random_sampling_limit}')
+    if farthest_removal:
+        cmd.append('-FARTHEST_REMOVAL')
+    if iter_ is not None:
+        cmd.append(f'-ITER')
+        cmd.append(f'{iter_}')
+
+    # Print the command for debugging purposes
+    print(f'cc {cmd}')
+
+    # Run the command
+    misc.run(cmd, verbose=debug)
+
+    # Return the output file path
+    out = os.path.join(os.getcwd(), 'registration_trace_log.csv')
+    return out
+
 def octree_normals(cloud, radius, with_grids=False, angle=1,
                    orient='PLUS_Z', model='QUADRIC', fmt='BIN',
                    silent=True, verbose=False, global_shift='AUTO', cc=cc_exe,
